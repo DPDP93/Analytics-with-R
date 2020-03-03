@@ -1,0 +1,41 @@
+---
+title: "Jobs Market Analysis"
+output: html_notebook
+---
+
+## Setup
+
+```{r}
+library(DBI)
+library(RSQLite)
+library(dplyr)
+library(lubridate)
+library(stringr)
+library(tibble)
+
+# Create connection, read table
+con = dbConnect(RSQLite::SQLite(), "data.sqlite")
+dbJobs = as_tibble(dbReadTable(con, "jobs"))
+```
+
+
+## Data Manipulation
+
+```{r}
+dbJobs = dbJobs %>% 
+    mutate(days = today() - as_date(dbJobs$date)) %>%
+    mutate(category = NA)
+
+categorize = function(x) {
+    if (str_detect(x, "risk") )
+}
+
+
+
+for (i in 1:nrow(dbJobs)) {
+    
+}
+
+```
+
+
