@@ -4,8 +4,8 @@ library(dplyr)
 library(tibble)
 
 # Scrap Page
-# Input: URL
-# Output: data.frame
+# @param {string} URL
+# @return {data.frame} - title, company
 parseDoc = function(url) {
     page = read_html(url)
     numberOfJobs = page %>% 
