@@ -27,4 +27,4 @@ tibble(
     tables = c("old", "existing", "new"),
     rows = c(nrow(oldJobs), nrow(existingJobs), nrow(newJobs))
 )
-rm(oldJobs, existingJobs, newJobs, dbJobs)
+rm(oldJobs, existingJobs, newJobs, dbJobs, jobs)

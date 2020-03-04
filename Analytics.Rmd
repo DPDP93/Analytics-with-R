@@ -1,5 +1,5 @@
 ---
-title: "Jobs Market Analysis"
+title: "Job Market Analysis"
 output: html_notebook
 ---
 
@@ -15,27 +15,42 @@ library(tibble)
 
 # Create connection, read table
 con = dbConnect(RSQLite::SQLite(), "data.sqlite")
-dbJobs = as_tibble(dbReadTable(con, "jobs"))
+df = as_tibble(dbReadTable(con, "JobAnalytics"))
 ```
 
 
-## Data Manipulation
+## Job Category
 
 ```{r}
-dbJobs = dbJobs %>% 
-    mutate(days = today() - as_date(dbJobs$date)) %>%
-    mutate(category = NA)
+df %>%   
+    group_by(category) %>% 
+    summarise(count = n(), age = round(mean(days), 2))  
+```
 
-categorize = function(x) {
-    if (str_detect(x, "risk") )
-}
+## Who is looking for most jobs?
 
-
-
-for (i in 1:nrow(dbJobs)) {
-    
-}
-
+```{r}
+df %>% 
+    group_by(company) %>%
+    summarise(count = n()) %>%
+    arrange(desc(count)) %>%
+    top_n(10)
 ```
 
 
+```{r}
+df %>% 
+    select(company, category) %>%
+    mutate(
+        IT = if_else(category == "data", 1, 0),
+        FI = if_else(category %in% c("controlling", "risk"), 1, 0)
+        ) %>%
+    group_by(company) %>%
+    summarise(
+        IT = sum(IT),
+        FI = sum(FI),
+        Total = IT + FI
+        ) %>%
+    arrange(desc(Total)) %>% 
+    top_n(10)
+```

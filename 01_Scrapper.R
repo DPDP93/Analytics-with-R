@@ -62,4 +62,4 @@ jobs = jobs %>% mutate(date = as.character(lubridate::today()))
 jobs = as_tibble(jobs)
 print(jobs)
 
-rm(i, j, pageNumber, url, parseDoc, pg)
+rm(i, j, pageNumber, url, parseDoc, pg, words)
