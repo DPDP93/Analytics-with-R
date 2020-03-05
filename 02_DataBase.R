@@ -2,6 +2,11 @@ library(DBI)
 library(RSQLite)
 library(dplyr)
 library(tibble)
+library(logger)
+
+log_threshold(TRACE)
+log_layout(layout_glue_colors)
+log_info("Database Procedures start")
 
 # Create connection, read table
 con = dbConnect(RSQLite::SQLite(), "data.sqlite")
@@ -23,8 +28,10 @@ dbWriteTable(con, "_jobs", dbJobs, overwrite = TRUE)
 
 
 # Log, cleanup
-tibble(
-    tables = c("old", "existing", "new"),
-    rows = c(nrow(oldJobs), nrow(existingJobs), nrow(newJobs))
+print(
+    tibble(
+        tables = c("old", "existing", "new"),
+        rows = c(nrow(oldJobs), nrow(existingJobs), nrow(newJobs))
+    )
 )
 rm(oldJobs, existingJobs, newJobs, dbJobs, jobs)

@@ -2,6 +2,11 @@ library(stringr)
 library(rvest)
 library(dplyr)
 library(tibble)
+library(logger)
+
+log_threshold(TRACE)
+log_layout(layout_glue_colors)
+log_info("Scrapper starts")
 
 # Scrap Page
 # @param {string} URL
@@ -60,6 +65,6 @@ jobs = jobs[-1,]
 jobs = jobs %>% distinct()
 jobs = jobs %>% mutate(date = as.character(lubridate::today()))
 jobs = as_tibble(jobs)
-print(jobs)
+log_success(str_interp("${nrow(jobs)} jobs are scrapped."))
 
 rm(i, j, pageNumber, url, parseDoc, pg, words)
